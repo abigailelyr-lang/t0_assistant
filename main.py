@@ -108,3 +108,87 @@ def main():
 
 if __name__ == "__main__":
     main()
+def input_provider_daily_data():
+    print("\n请输入四家量化T0的实际使用情况。")
+    print("金额单位：元，没有使用填0。")
+    print("股票填写示例：景旺电子,中际旭创,胜宏科技")
+
+    provider_data = {}
+
+    for provider in PROVIDERS:
+        print(f"\n--- {provider} ---")
+
+        while True:
+            try:
+                capital = float(input(f"{provider} 实际投入资金：").strip())
+                break
+            except ValueError:
+                print("请输入数字。")
+
+        used_stocks = input(f"{provider} 使用股票：").strip()
+
+        while True:
+            try:
+                daily_return = float(input(f"{provider} 实际收益：").strip())
+                break
+            except ValueError:
+                print("请输入数字。")
+
+        provider_data[provider] = {
+            "capital": capital,
+            "used_stocks": used_stocks,
+            "return": daily_return,
+        }
+
+    note = input("\n备注（可空）：").strip()
+    return provider_data, note
+
+
+def main():
+    print("正在抓取今日市场数据……")
+    data = fetch_with_akshare(STOCKS)
+
+    if data.get("errors"):
+        print("\n抓取提示：")
+        for err in data["errors"]:
+            print("-", err)
+
+    provider_daily_data, note = input_provider_daily_data()
+
+    data["provider_daily_data"] = provider_daily_data
+    data["provider_returns"] = {
+        k: v["return"] for k, v in provider_daily_data.items()
+    }
+    data["note"] = note
+
+    rec = recommend(data)
+    append_to_excel(data, rec)
+
+    report = make_report(data, rec)
+
+    (DATA_DIR / f"market_{data.get('date')}.json").write_text(
+        json.dumps(data, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+
+    cls = rec["classification"]
+
+    print("\n===== T0 今日建议 =====")
+    print(f"日期：{data.get('date')}")
+    print(f"行情分类：{cls['regime']} | T0参与度：{int(cls['t0_participation']*100)}% | 风险：{cls['risk']}")
+    print(f"建议参与资金：{rec['active_amount']:,.0f} 元")
+
+    print("\n四家量化分配：")
+    for k, amount in rec["provider_amounts"].items():
+        print(f"- {k}: {amount:,.0f} 元")
+
+    print("\n今日实际记录：")
+    for k, item in provider_daily_data.items():
+        print(f"- {k}: 投入{item['capital']:,.0f}元 | 股票:{item['used_stocks'] or '无'} | 收益:{item['return']:,.2f}")
+
+    print(f"\nExcel已更新：{EXCEL_PATH}")
+    print(f"报告已生成：{report}")
+
+
+if __name__ == "__main__":
+    main()

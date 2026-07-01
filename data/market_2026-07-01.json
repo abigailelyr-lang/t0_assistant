@@ -1,0 +1,77 @@
+{
+  "date": "2026-07-01",
+  "data_source": "akshare",
+  "indices": {
+    "上证指数": {
+      "最新价": null,
+      "涨跌幅": null
+    },
+    "创业板指": {
+      "最新价": null,
+      "涨跌幅": null
+    },
+    "深证成指": {
+      "最新价": null,
+      "涨跌幅": null
+    }
+  },
+  "stocks": {
+    "景旺电子": {
+      "代码": "603228",
+      "最新价": null,
+      "涨跌幅": null,
+      "振幅": null,
+      "换手率": null,
+      "成交额": null
+    },
+    "中际旭创": {
+      "代码": "300308",
+      "最新价": null,
+      "涨跌幅": null,
+      "振幅": null,
+      "换手率": null,
+      "成交额": null
+    },
+    "胜宏科技": {
+      "代码": "300476",
+      "最新价": null,
+      "涨跌幅": null,
+      "振幅": null,
+      "换手率": null,
+      "成交额": null
+    }
+  },
+  "errors": [
+    "指数数据抓取失败：('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))",
+    "个股数据抓取失败：('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))"
+  ],
+  "provider_daily_data": {
+    "非凸": {
+      "capital": 0.0,
+      "used_stocks": "0",
+      "return": 0.0
+    },
+    "卡方": {
+      "capital": 0.0,
+      "used_stocks": "0",
+      "return": 0.0
+    },
+    "皓兴": {
+      "capital": 1000000.0,
+      "used_stocks": "景旺电子,中际旭创,胜宏科技",
+      "return": 350.0
+    },
+    "跃然": {
+      "capital": 0.0,
+      "used_stocks": "0",
+      "return": 0.0
+    }
+  },
+  "provider_returns": {
+    "非凸": 0.0,
+    "卡方": 0.0,
+    "皓兴": 350.0,
+    "跃然": 0.0
+  },
+  "note": ""
+}
